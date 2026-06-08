@@ -160,25 +160,7 @@ Premium engineering-focused web experiences.
 
 <div align="center">
 
-<img height="180" src="https://github-readme-stats.vercel.app/api?username=aliihtsham-debug&show_icons=true&include_all_commits=true&hide_border=true"/>
-
 <img height="180" src="https://github-readme-streak-stats.herokuapp.com/?user=aliihtsham-debug&hide_border=true"/>
-
-</div>
-
-<div align="center">
-
-<img height="180" src="https://github-readme-stats.vercel.app/api/top-langs/?username=aliihtsham-debug&layout=compact&hide_border=true"/>
-
-</div>
-
----
-
-# 🏆 Achievements
-
-<div align="center">
-
-<img src="https://github-profile-trophy.vercel.app/?username=aliihtsham-debug&theme=algolia&row=1&column=7&margin-w=10" />
 
 </div>
 
