@@ -51,9 +51,6 @@ scrape_photo.py
 linkedin-profile-full.json
 linkedin-sidebar.json
 
-# Downloaded images (not original assets)
-public/images/
-
 # Misc
 AGENTS.md
 CLAUDE.md
