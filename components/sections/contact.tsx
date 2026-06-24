@@ -61,11 +61,12 @@ export function Contact() {
         >
           {/* Email button with 3D press */}
           <motion.div
-            whileHover={{ scale: 1.05, y: -2 }}
-            whileTap={{ scale: 0.95, y: 1 }}
+            className="btn-3d-press"
+            whileHover={{ scale: 1.05, y: -3 }}
+            whileTap={{ scale: 0.95, y: 2 }}
             transition={{ type: "spring", stiffness: 400, damping: 17 }}
           >
-            <Button size="xl" className="w-full max-w-sm" asChild>
+            <Button size="xl" className="w-full max-w-sm shadow-[0_4px_0_rgba(168,85,247,0.4)] hover:shadow-[0_6px_0_rgba(168,85,247,0.5)] active:shadow-[0_1px_0_rgba(168,85,247,0.3)]" asChild>
               <a href="mailto:ali@codebrandstudio.com" className="group">
                 <Send className="w-5 h-5 mr-2 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                 Get in Touch

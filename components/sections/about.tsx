@@ -30,8 +30,8 @@ function TiltAvatar() {
   const mouseY = useMotionValue(0)
   const springX = useSpring(mouseX, { stiffness: 150, damping: 25 })
   const springY = useSpring(mouseY, { stiffness: 150, damping: 25 })
-  const rotateX = useTransform(springY, [-0.5, 0.5], [6, -6])
-  const rotateY = useTransform(springX, [-0.5, 0.5], [-6, 6])
+  const rotateX = useTransform(springY, [-0.5, 0.5], [10, -10])
+  const rotateY = useTransform(springX, [-0.5, 0.5], [-10, 10])
 
   const handleMouseMove = (e: React.MouseEvent) => {
     if (!ref.current) return
@@ -72,9 +72,17 @@ function TiltAvatar() {
         <div className="absolute bottom-4 right-4 w-8 h-8 border-r-2 border-b-2 border-neon-violet/40 rounded-br-lg" />
       </div>
 
-      {/* Floating accent */}
-      <div className="absolute -bottom-4 -right-4 w-24 h-24 bg-neon-violet/10 rounded-2xl -z-10 border border-neon-violet/20 animate-float" />
-      <div className="absolute -top-3 -left-3 w-16 h-16 bg-neon-cyan/5 rounded-xl -z-10 border border-neon-cyan/15" />
+      {/* Floating accent — layered depth */}
+      <motion.div
+        className="absolute -bottom-4 -right-4 w-24 h-24 bg-neon-violet/10 rounded-2xl -z-10 border border-neon-violet/20"
+        animate={{ y: [0, -8, 0] }}
+        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+      />
+      <motion.div
+        className="absolute -top-3 -left-3 w-16 h-16 bg-neon-cyan/5 rounded-xl -z-10 border border-neon-cyan/15"
+        animate={{ y: [0, 6, 0] }}
+        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+      />
     </motion.div>
   )
 }

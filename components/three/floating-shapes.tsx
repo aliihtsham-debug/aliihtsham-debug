@@ -58,10 +58,15 @@ function GeometryByType({ type }: { type: string }) {
   }
 }
 
-function FloatingShape({ config }: { config: ShapeConfig }) {
+function FloatingShape({ config, activeSection }: { config: ShapeConfig; activeSection: number }) {
   const meshRef = useRef<THREE.Mesh>(null)
   const speed = useMemo(() => 0.08 + Math.random() * 0.12, [])
   const rotOffset = useMemo(() => Math.random() * Math.PI * 2, [])
+
+  // Zone highlighting: active zone is brighter/larger
+  const isActiveZone = config.zone === activeSection
+  const targetOpacity = isActiveZone ? 0.4 : (config.wireframe ? 0.08 : 0.15)
+  const targetScale = config.scale * (isActiveZone ? 1.3 : 1.0)
 
   useFrame((state) => {
     if (!meshRef.current) return
@@ -69,8 +74,13 @@ function FloatingShape({ config }: { config: ShapeConfig }) {
     meshRef.current.rotation.x = t * speed
     meshRef.current.rotation.y = t * speed * 1.3
 
-    // Subtle mouse-reactive tilt
+    // Mouse-reactive tilt
     meshRef.current.rotation.z += (mouseState.smoothed.x * 0.02 - meshRef.current.rotation.z) * 0.02
+
+    // Smooth opacity/scale transitions
+    const mat = meshRef.current.material as THREE.MeshStandardMaterial
+    mat.opacity += (targetOpacity - mat.opacity) * 0.05
+    meshRef.current.scale.lerp(new THREE.Vector3(targetScale, targetScale, targetScale), 0.05)
   })
 
   return (
@@ -95,11 +105,15 @@ function FloatingShape({ config }: { config: ShapeConfig }) {
   )
 }
 
-export function FloatingShapes() {
+interface FloatingShapesProps {
+  activeSection?: number
+}
+
+export function FloatingShapes({ activeSection = 0 }: FloatingShapesProps) {
   return (
     <group>
       {SHAPE_CONFIGS.map((config, i) => (
-        <FloatingShape key={i} config={config} />
+        <FloatingShape key={i} config={config} activeSection={activeSection} />
       ))}
     </group>
   )

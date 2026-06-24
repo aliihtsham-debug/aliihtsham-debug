@@ -4,6 +4,7 @@ import "./globals.css"
 import { Header } from "@/components/layout/header"
 import { Footer } from "@/components/layout/footer"
 import { Scene3DWrapper } from "@/components/three/Scene3DWrapper"
+import { ParallaxProvider } from "@/contexts/parallax-context"
 
 export const metadata: Metadata = {
   title: "Ali Ihtsham — AI Engineer & Founder @ Code Brand Studio",
@@ -29,9 +30,11 @@ export default function RootLayout({
     >
       <body className="min-h-screen bg-bg-primary text-text-primary antialiased" suppressHydrationWarning>
         <Scene3DWrapper />
-        <Header />
-        <main className="relative z-10">{children}</main>
-        <Footer />
+        <ParallaxProvider>
+          <Header />
+          <main className="relative z-10">{children}</main>
+          <Footer />
+        </ParallaxProvider>
       </body>
     </html>
   )

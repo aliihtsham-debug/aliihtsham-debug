@@ -5,7 +5,7 @@ import { motion } from "framer-motion"
 import { ArrowRight, Clock, Calendar, BookOpen } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Card3D } from "@/components/ui/card-3d"
+import { TiltCard } from "@/components/ui/tilt-card"
 import { blogPosts } from "@/lib/data"
 
 export function Blog() {
@@ -51,14 +51,16 @@ export function Blog() {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.12 }}
             >
-              <Card3D
+              <TiltCard
                 glowColor={
                   index % 3 === 0
-                    ? "rgba(34,211,238,0.12)"
+                    ? "rgba(34,211,238,0.15)"
                     : index % 3 === 1
-                      ? "rgba(168,85,247,0.12)"
-                      : "rgba(236,72,153,0.12)"
+                      ? "rgba(168,85,247,0.15)"
+                      : "rgba(236,72,153,0.15)"
                 }
+                intensity={0.8}
+                depth={15}
               >
                 <article className="group p-6 rounded-2xl border border-border-subtle bg-bg-card hover:border-neon-cyan/30 transition-all duration-500 cursor-pointer hover:shadow-[0_0_35px_rgba(34,211,238,0.08)] h-full flex flex-col">
                   {/* Meta */}
@@ -100,7 +102,7 @@ export function Blog() {
                   {/* Bottom accent line */}
                   <div className="absolute bottom-0 left-6 right-6 h-[1px] bg-gradient-to-r from-transparent via-neon-cyan/0 to-transparent group-hover:via-neon-cyan/40 transition-all duration-500" />
                 </article>
-              </Card3D>
+              </TiltCard>
             </motion.div>
           ))}
         </div>

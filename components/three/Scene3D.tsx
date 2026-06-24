@@ -8,21 +8,35 @@ import { EnhancedParticles } from "./enhanced-particles"
 import { FloatingShapes } from "./floating-shapes"
 import { LightingRig } from "./lighting-rig"
 import { EnvironmentEffects } from "./environment-effects"
+import { AuroraBackground } from "./aurora-background"
+import { HeroShaderMesh } from "./hero-shader-mesh"
+import { SectionDepthRings } from "./section-depth-rings"
+import { PostProcessing } from "./post-processing"
+import { useScrollProgress } from "@/hooks/useScrollProgress"
 
-function SceneContent() {
+function SceneContent({ activeSection, scrollProgress }: {
+  activeSection: number
+  scrollProgress: number
+}) {
   return (
     <>
       <MouseTracker />
       <ScrollCamera />
-      <LightingRig />
+      <LightingRig activeSection={activeSection} />
       <EnvironmentEffects />
-      <EnhancedParticles count={1000} />
-      <FloatingShapes />
+      <AuroraBackground />
+      <HeroShaderMesh activeSection={activeSection} scrollProgress={scrollProgress} />
+      <SectionDepthRings activeSection={activeSection} />
+      <EnhancedParticles count={700} activeSection={activeSection} />
+      <FloatingShapes activeSection={activeSection} />
+      <PostProcessing />
     </>
   )
 }
 
 export function Scene3D() {
+  const { progress, activeSection } = useScrollProgress()
+
   return (
     <div className="fixed inset-0 z-0 pointer-events-none">
       <Canvas
@@ -32,7 +46,7 @@ export function Scene3D() {
         style={{ background: "transparent" }}
       >
         <Suspense fallback={null}>
-          <SceneContent />
+          <SceneContent activeSection={activeSection} scrollProgress={progress} />
         </Suspense>
       </Canvas>
     </div>

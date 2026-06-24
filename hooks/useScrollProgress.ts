@@ -1,38 +1,73 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef, useCallback } from "react"
 
-export function useScrollProgress() {
-  const [progress, setProgress] = useState(0)
-  const [activeSection, setActiveSection] = useState(0)
+interface ScrollProgressState {
+  progress: number
+  activeSection: number
+  sectionProgress: number
+}
 
-  useEffect(() => {
+export function useScrollProgress(): ScrollProgressState {
+  const [state, setState] = useState<ScrollProgressState>({
+    progress: 0,
+    activeSection: 0,
+    sectionProgress: 0,
+  })
+  const rafId = useRef<number>(0)
+
+  const update = useCallback(() => {
     const sections = ["hero", "about", "projects", "skills", "blog", "contact"]
+    const scrollY = window.scrollY
+    const docHeight = document.body.scrollHeight - window.innerHeight
+    const progress = docHeight > 0 ? Math.min(Math.max(scrollY / docHeight, 0), 1) : 0
 
-    const handler = () => {
-      const scrollY = window.scrollY
-      const docHeight = document.body.scrollHeight - window.innerHeight
-      const p = docHeight > 0 ? scrollY / docHeight : 0
-      setProgress(Math.min(Math.max(p, 0), 1))
-
-      let active = 0
-      for (let i = sections.length - 1; i >= 0; i--) {
-        const el = document.getElementById(sections[i])
-        if (el) {
-          const rect = el.getBoundingClientRect()
-          if (rect.top <= window.innerHeight * 0.5) {
-            active = i
-            break
-          }
+    // Find active section
+    let active = 0
+    for (let i = sections.length - 1; i >= 0; i--) {
+      const el = document.getElementById(sections[i])
+      if (el) {
+        const rect = el.getBoundingClientRect()
+        if (rect.top <= window.innerHeight * 0.5) {
+          active = i
+          break
         }
       }
-      setActiveSection(active)
+    }
+
+    // Calculate section-local progress
+    const sectionEl = document.getElementById(sections[active])
+    let sectionProgress = 0
+    if (sectionEl) {
+      const rect = sectionEl.getBoundingClientRect()
+      const sectionHeight = rect.height
+      const viewportProgress = Math.min(
+        Math.max((window.innerHeight * 0.5 - rect.top) / sectionHeight,
+        0),
+        1
+      )
+      sectionProgress = viewportProgress
+    }
+
+    setState({ progress, activeSection: active, sectionProgress })
+  }, [])
+
+  useEffect(() => {
+    const handler = () => {
+      cancelAnimationFrame(rafId.current)
+      rafId.current = requestAnimationFrame(update)
     }
 
     window.addEventListener("scroll", handler, { passive: true })
+    window.addEventListener("resize", handler, { passive: true })
     handler()
-    return () => window.removeEventListener("scroll", handler)
-  }, [])
 
-  return { progress, activeSection }
+    return () => {
+      window.removeEventListener("scroll", handler)
+      window.removeEventListener("resize", handler)
+      cancelAnimationFrame(rafId.current)
+    }
+  }, [update])
+
+  return state
 }

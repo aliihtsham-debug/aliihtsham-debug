@@ -5,7 +5,7 @@ import { motion } from "framer-motion"
 import { ExternalLink, GitFork, ArrowUpRight, Layers, Star } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Card3D } from "@/components/ui/card-3d"
+import { TiltCard } from "@/components/ui/tilt-card"
 import { AgentFlow } from "./AgentFlow"
 import { GitBranchLines } from "./GitBranchLines"
 import { projects } from "@/lib/data"
@@ -61,15 +61,17 @@ export function Projects() {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.15 }}
             >
-              <Card3D
+              <TiltCard
                 className="h-full"
                 glowColor={
                   index % 3 === 0
-                    ? "rgba(168,85,247,0.15)"
+                    ? "rgba(168,85,247,0.2)"
                     : index % 3 === 1
-                      ? "rgba(34,211,238,0.15)"
-                      : "rgba(236,72,153,0.15)"
+                      ? "rgba(34,211,238,0.2)"
+                      : "rgba(236,72,153,0.2)"
                 }
+                intensity={1.2}
+                depth={25}
               >
                 <article className="group relative h-full rounded-2xl border border-border-subtle bg-bg-card overflow-hidden transition-all duration-500 hover:border-neon-violet/30 hover:shadow-[0_0_40px_rgba(168,85,247,0.12)]">
                   {/* Animated gradient border on hover */}
@@ -143,7 +145,7 @@ export function Projects() {
                     </div>
                   </div>
                 </article>
-              </Card3D>
+              </TiltCard>
             </motion.div>
           ))}
           </div>

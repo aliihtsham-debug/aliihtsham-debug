@@ -266,10 +266,63 @@
               box-shadow 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
+/* Section 3D wrapper */
+.section-3d {
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+/* Layered depth children get translateZ */
+.layered-depth > * {
+  transform-style: preserve-3d;
+}
+
+.layered-depth .layer-front {
+  transform: translateZ(30px);
+}
+
+.layered-depth .layer-mid {
+  transform: translateZ(15px);
+}
+
+.layered-depth .layer-back {
+  transform: translateZ(-10px);
+}
+
+/* 3D Tilt on hover */
+.tilt-3d {
+  transition: transform 0.15s ease-out;
+  transform-style: preserve-3d;
+}
+
+/* Magnetic button press */
+.btn-3d-press {
+  transition: transform 0.15s ease-out;
+}
+
+.btn-3d-press:active {
+  transform: translateY(2px) scale(0.98);
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+
+  /* Disable 3D transforms under reduced motion */
+  .perspective-1000,
+  .perspective-800 {
+    perspective: none !important;
+  }
+
+  .preserve-3d {
+    transform-style: flat !important;
+  }
+
+  /* Disable parallax sections */
+  [data-section] * {
+    transform: none !important;
   }
 }
